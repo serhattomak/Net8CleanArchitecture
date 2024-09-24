@@ -18,9 +18,9 @@ public static class RepositoryExtensions
 				sqlServerOptionsAction.MigrationsAssembly(typeof(RepositoryAssembly).Assembly.FullName);
 			});
 		});
-
 		services.AddScoped<IProductRepository, ProductRepository>();
 		services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+		services.AddScoped<IUnitOfWork, UnitOfWork>();
 		return services;
 	}
 }
