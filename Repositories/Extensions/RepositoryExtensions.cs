@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using App.Repositories.Products;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +19,8 @@ public static class RepositoryExtensions
 			});
 		});
 
+		services.AddScoped<IProductRepository, ProductRepository>();
+		services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 		return services;
 	}
 }
