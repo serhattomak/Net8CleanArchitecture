@@ -1,3 +1,4 @@
+using App.Services.Products;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.API.Controllers

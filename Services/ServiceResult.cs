@@ -37,3 +37,36 @@ public class ServiceResult<T>
 		};
 	}
 }
+public class ServiceResult
+{
+	public List<string>? ErrorMessage { get; set; }
+	public bool IsSuccess => ErrorMessage == null || ErrorMessage.Count == 0;
+	public bool IsFailure => !IsSuccess;
+	public HttpStatusCode Status { get; set; }
+	// static factory methods
+	public static ServiceResult Success(HttpStatusCode status = HttpStatusCode.OK)
+	{
+		return new ServiceResult()
+		{
+			Status = status
+		};
+	}
+
+	public static ServiceResult Failure(List<string> errorMessage, HttpStatusCode status = HttpStatusCode.BadRequest)
+	{
+		return new ServiceResult()
+		{
+			ErrorMessage = errorMessage,
+			Status = status
+		};
+	}
+
+	public static ServiceResult Failure(string errorMessage, HttpStatusCode status = HttpStatusCode.BadRequest)
+	{
+		return new ServiceResult()
+		{
+			ErrorMessage = [errorMessage],
+			Status = status
+		};
+	}
+}

@@ -2,5 +2,5 @@
 
 public interface IProductService
 {
-
+	Task<ServiceResult<List<ProductDto>>> GetTopPriceProductsAsync(int count);
 }
