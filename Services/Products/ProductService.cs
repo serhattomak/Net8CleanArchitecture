@@ -48,6 +48,14 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
 	}
 	public async Task<ServiceResult<CreateProductResponse>> CreateAsync(CreateProductRequest request)
 	{
+		// 2nd way to check if product name is already exist in database
+		var anyProduct = await productRepository.Where(x => x.Name == request.Name).AnyAsync();
+
+		if (anyProduct)
+		{
+			return ServiceResult<CreateProductResponse>.Failure("Product name is already exist in database.", HttpStatusCode.BadRequest);
+		}
+
 		var product = new Product()
 		{
 			Name = request.Name,
