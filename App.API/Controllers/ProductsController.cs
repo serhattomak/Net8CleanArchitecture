@@ -1,9 +1,11 @@
 ﻿using App.Services.Products;
+using App.Services.Products.Create;
+using App.Services.Products.Update;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.API.Controllers
 {
-	public class ProductsController(IProductService productService) : CustomBaseController
+    public class ProductsController(IProductService productService) : CustomBaseController
 	{
 		[HttpGet]
 		public async Task<IActionResult> GetAll() => CreateActionResult(await productService.GetAllListAsync());
