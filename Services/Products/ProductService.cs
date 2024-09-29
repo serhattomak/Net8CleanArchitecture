@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using App.Repositories;
 using App.Repositories.Products;
+using App.Services.ExceptionHandlers;
 using App.Services.Products.Create;
 using App.Services.Products.Update;
 using AutoMapper;
@@ -69,6 +70,8 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
 	}
 	public async Task<ServiceResult<CreateProductResponse>> CreateAsync(CreateProductRequest request)
 	{
+		//throw new CriticalException("A critical level error has occurred.");
+		//throw new Exception("Db error");
 		// 2nd way to check if product name is already exist in database
 		var anyProduct = await productRepository.Where(x => x.Name == request.Name).AnyAsync();
 
