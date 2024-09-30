@@ -1,12 +1,11 @@
-﻿using System.Net;
-using App.Repositories;
+﻿using App.Repositories;
 using App.Repositories.Products;
-using App.Services.ExceptionHandlers;
 using App.Services.Products.Create;
 using App.Services.Products.Update;
 using App.Services.Products.UpdateStock;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace App.Services.Products;
 
@@ -16,7 +15,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
 	{
 		var products = await productRepository.GetTopPriceProductsAsync(count);
 
-		var productsAsDto = products.Select(p => new ProductDto(p.Id, p.Name, p.Price, p.Stock)).ToList();
+		var productsAsDto = mapper.Map<List<ProductDto>>(products);
 
 		return new ServiceResult<List<ProductDto>>()
 		{
@@ -81,12 +80,7 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
 			return ServiceResult<CreateProductResponse>.Failure("Product name is already exist in database.", HttpStatusCode.BadRequest);
 		}
 
-		var product = new Product()
-		{
-			Name = request.Name,
-			Price = request.Price,
-			Stock = request.Stock
-		};
+		var product = mapper.Map<Product>(request);
 
 		await productRepository.AddAsync(product);
 		await unitOfWork.SaveChangesAsync();
@@ -108,9 +102,11 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
 			return ServiceResult.Failure("Product name is already exist in database.", HttpStatusCode.BadRequest);
 		}
 
-		product.Name = request.Name;
-		product.Price = request.Price;
-		product.Stock = request.Stock;
+		//product.Name = request.Name;
+		//product.Price = request.Price;
+		//product.Stock = request.Stock;
+
+		product=mapper.Map(request, product);
 
 		productRepository.Update(product);
 		await unitOfWork.SaveChangesAsync();
