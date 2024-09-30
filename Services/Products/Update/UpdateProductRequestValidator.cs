@@ -11,11 +11,14 @@ public class UpdateProductRequestValidator: AbstractValidator<UpdateProductReque
 		_productRepository = productRepository;
 		RuleFor(x => x.Name)
 			.NotEmpty().WithMessage("Product name is required.")
-			.Length(3, 10).WithMessage("Product name should be min 3, max 10 characters.");
+			.Length(3, 100).WithMessage("Product name should be min 3, max 100 characters.");
 
 		// price validation
 		RuleFor(x => x.Price)
 			.GreaterThan(0).WithMessage("Price should be greater than 0.");
+
+		RuleFor(x => x.CategoryId)
+			.GreaterThan(0).WithMessage("Category Id should be greater than 0.");
 
 		// stock inclusiveBetween validation
 		RuleFor(x => x.Stock)
