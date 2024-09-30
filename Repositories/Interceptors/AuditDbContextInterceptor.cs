@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Diagnostics;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace App.Repositories.Interceptors;
@@ -16,7 +15,6 @@ public class AuditDbContextInterceptor : SaveChangesInterceptor
 		auditEntity.Created = DateTime.UtcNow;
 		context.Entry(auditEntity).Property(x => x.Updated).IsModified = false;
 	}
-
 	private static void ModifiedBehaviour(DbContext context, IAuditEntity auditEntity)
 	{
 		context.Entry(auditEntity).Property(x => x.Created).IsModified = false;
@@ -29,6 +27,8 @@ public class AuditDbContextInterceptor : SaveChangesInterceptor
 		foreach (var entityEntry in eventData.Context!.ChangeTracker.Entries().ToList())
 		{
 			if (entityEntry.Entity is not IAuditEntity auditEntity) continue;
+
+			if (entityEntry.State is not (EntityState.Added or EntityState.Modified)) continue;
 
 			Behaviours[entityEntry.State](eventData.Context, auditEntity);
 

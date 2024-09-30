@@ -88,25 +88,15 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
 	}
 	public async Task<ServiceResult> UpdateAsync(int id, UpdateProductRequest request)
 	{
-		var product = await productRepository.GetByIdAsync(id);
-
-		if (product is null)
-		{
-			return ServiceResult.Failure("Product not found", HttpStatusCode.NotFound);
-		}
-
-		var isProductNameExist = await productRepository.Where(x => x.Name == request.Name && x.Id != product.Id).AnyAsync();
+		var isProductNameExist = await productRepository.Where(x => x.Name == request.Name && x.Id != id).AnyAsync();
 
 		if (isProductNameExist)
 		{
 			return ServiceResult.Failure("Product name is already exist in database.", HttpStatusCode.BadRequest);
 		}
 
-		//product.Name = request.Name;
-		//product.Price = request.Price;
-		//product.Stock = request.Stock;
-
-		product=mapper.Map(request, product);
+		var product = mapper.Map<Product>(request);
+		product.Id = id;
 
 		productRepository.Update(product);
 		await unitOfWork.SaveChangesAsync();
@@ -133,14 +123,8 @@ public class ProductService(IProductRepository productRepository, IUnitOfWork un
 	{
 		var product = await productRepository.GetByIdAsync(id);
 
-		if (product is null)
-		{
-			return ServiceResult.Failure("Product not found", HttpStatusCode.NotFound);
-		}
-
-		productRepository.Delete(product);
+		productRepository.Delete(product!);
 		await unitOfWork.SaveChangesAsync();
-
 		return ServiceResult.Success(HttpStatusCode.NoContent);
 	}
 }
