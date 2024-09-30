@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using App.Services.Categories;
 using App.Services.ExceptionHandlers;
 using App.Services.Products;
 using FluentValidation;
@@ -13,6 +14,7 @@ public static class ServiceExtension
 	public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
 	{
 		services.AddScoped<IProductService, ProductService>();
+		services.AddScoped<ICategoryService, CategoryService>();
 
 		services.AddFluentValidationAutoValidation();
 

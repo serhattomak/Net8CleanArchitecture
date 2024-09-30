@@ -3,5 +3,5 @@
 public interface ICategoryRepository:IGenericRepository<Category>
 {
 	Task<Category?> GetCategoryWithProductsAsync(int id);
-	IQueryable<Category> GetCategoryByProductsAsync();
+	IQueryable<Category> GetCategoryWithProducts();
 }
