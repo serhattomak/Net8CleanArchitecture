@@ -22,12 +22,6 @@ public static class ServiceExtension
 		services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 		services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-
-		//TODO : MOVE TO THE API
-		//services.AddScoped(typeof(NotFoundFilter<,>));
-		//services.AddExceptionHandler<CriticalExceptionHandler>();
-		//services.AddExceptionHandler<GlobalExceptionHandler>();
-
 		return services;
 	}
 }
